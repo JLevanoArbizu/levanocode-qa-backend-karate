@@ -8,7 +8,7 @@ Este repositorio contiene la resolución del reto de automatización para la API
 
 ---
 
-## 🚀 1. Instrucciones de Configuración
+## 1. Instrucciones de Configuración
 
 Asegúrate de tener **Java JDK 17** (o superior) y **Apache Maven (3.8+)** instalados en tu sistema antes de comenzar para poder configurar el proyecto con Karate DSL.
 
@@ -25,7 +25,7 @@ Asegúrate de tener **Java JDK 17** (o superior) y **Apache Maven (3.8+)** insta
 
 ---
 
-## 🏃 2. Ejecución de Pruebas
+## 2. Ejecución de Pruebas
 
 El framework está preparado para ejecutarse mediante el test runner de Maven.
 
@@ -41,7 +41,7 @@ El framework está preparado para ejecutarse mediante el test runner de Maven.
 
 ---
 
-## 📊 3. Reportes y Evidencias
+## 3. Reportes y Evidencias
 
 Al finalizar la ejecución de los tests automatizados para validar la funcionalidad completa, Karate genera un reporte visual HTML interactivo.
 
@@ -50,7 +50,7 @@ Al finalizar la ejecución de los tests automatizados para validar la funcionali
 
 ---
 
-## 📋 4. Cobertura del Reto y Criterios de Aceptación
+## 4. Cobertura del Reto y Criterios de Aceptación
 
 El framework ha sido diseñado para cumplir estrictamente con la historia de usuario principal:
 > Como un administrador del sistema, quiero poder gestionar los usuarios a través de la API, para administrar la base de datos de usuarios.
@@ -64,7 +64,7 @@ Se han automatizado las siguientes operaciones CRUD para cumplir con los criteri
 
 ---
 
-## 🏗️ 5. Informe de Estrategia de Automatización y Patrones
+## 5. Informe de Estrategia de Automatización y Patrones
 
 El framework se enfoca en la escalabilidad y cumple con los requerimientos técnicos definidos:
 
@@ -76,7 +76,7 @@ El framework se enfoca en la escalabilidad y cumple con los requerimientos técn
 
 ---
 
-## 📂 6. Estructura del Proyecto
+## 6. Estructura del Proyecto
 
 El proyecto está organizado separando la lógica y creando feature files específicos:
 
