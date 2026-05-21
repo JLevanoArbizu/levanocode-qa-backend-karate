@@ -1,0 +1,37 @@
+name: QA Automation - Karate Alerts
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  cucumber-testing:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Descarga el código del repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configura Java
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # 3. Ejecuta las pruebas de Karate
+      - name: Execute Karate Tests
+        run: mvn test
+        # Si las pruebas fallan, este paso marcará "error" y saltará a los pasos con if: failure()
+
+      # 4. NOTIFICACIÓN A TEAMS (Solo si algo falló arriba)
+      - name: Microsoft Teams Notification
+        if: failure()
+        uses: jdcargile/ms-teams-notification@v1.4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          ms-teams-webhook-uri: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          notification-summary: "🚨 ¡Alerta! Fallo en las pruebas de Karate"
+          notification-color: "FF0000"
