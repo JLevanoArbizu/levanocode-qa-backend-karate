@@ -26,6 +26,16 @@ jobs:
         run: mvn test
         # Si las pruebas fallan, este paso marcará "error" y saltará a los pasos con if: failure()
 
+      # 4. GUARDA EL REPORTE DE KARATE (¡Nuevo!)
+      # Este paso se ejecuta siempre (if: always()), fallen o pasen las pruebas.
+      - name: Upload Karate Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-reports
+          path: target/karate-reports/ # Ruta por defecto donde Karate guarda su HTML
+          retention-days: 2 # Guarda el reporte por 2 para no saturar espacio
+
       # 4. NOTIFICACIÓN A TEAMS (Solo si algo falló arriba)
       - name: Microsoft Teams Notification
         if: failure()

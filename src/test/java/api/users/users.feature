@@ -43,7 +43,7 @@ Feature: API de Usuarios - ServeRest
     And request userData
     When method put
     Then status 200
-    And match response.message == 'Registro alterado com sucesso'
+    And match response.message == 'Registro alterado com sucessoERROR'
 
     # DELETE /usuarios/{_id} - Eliminar usuario
     Given path 'usuarios', userId
