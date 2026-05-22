@@ -1,0 +1,63 @@
+name: QA Automation - Release & Certification Approval
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Selecciona el ambiente para la certificación'
+        required: true
+        default: 'UAT'
+        type: choice
+        options:
+          - QA
+          - UAT
+          - PROD
+      run_type:
+        description: 'Tipo de ejecución'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - smoke
+          - critical-path
+
+jobs:
+  release-certification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Ejecución dinámica: Inyecta el ambiente seleccionado al 'karate.env' de tu karate-config.js
+      - name: Execute Certification Tests
+        run: |
+          echo "Iniciando certificación en el ambiente: ${{ github.event.inputs.environment }}"
+          mvn clean test -Dkarate.env=${{ github.event.inputs.environment }}
+        
+      # Siempre guarda el reporte como evidencia legal de la certificación del pase
+      - name: Upload Certification Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-certification-${{ github.event.inputs.environment }}-report
+          path: target/karate-reports/
+          retention-days: 15 # Retención extendida para auditorías de software
+
+      # Alerta de estado final del Pase en Teams
+      - name: Microsoft Teams Notification
+        if: always()
+        uses: jdcargile/ms-teams-notification@v1.4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          ms-teams-webhook-uri: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          notification-summary: "🚀 Certificación en ${{ github.event.inputs.environment }} finalizada. Estado: ${{ job.status }}"
+          notification-color: "0052cc"

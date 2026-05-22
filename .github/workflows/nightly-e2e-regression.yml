@@ -1,0 +1,47 @@
+name: QA Automation - Nightly E2E Regression
+
+on:
+  schedule:
+    # 2:00 AM hora local Perú (UTC-5) -> 7:00 AM UTC
+    - cron: '0 7 * * *'
+  
+  # Permite ejecución manual opcional desde la interfaz de GitHub
+  workflow_dispatch: 
+
+jobs:
+  nightly-regression:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Ejecuta toda la suite E2E / Regresión Completa
+      - name: Execute Full E2E Regression
+        run: mvn clean test -Dkarate.options="--tags @e2e"
+        
+      # Optimización: Sube el reporte SOLO si la regresión nocturna falló
+      - name: Upload Regression Karate Report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-nightly-reports
+          path: target/karate-reports/
+          retention-days: 7 # Más días de retención para analizar a fondo
+
+      # Alerta crítica a Teams si la madrugada falló
+      - name: Microsoft Teams Notification
+        if: failure()
+        uses: jdcargile/ms-teams-notification@v1.4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          ms-teams-webhook-uri: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          notification-summary: "🚨 Regresión Nocturna Fallida - Revisar código inmediatamente"
+          notification-color: "FF0000"
