@@ -12,9 +12,9 @@ function fn() {
   };
 
   if (env == 'QA') {
-    config.baseUrl = 'https://qa.serverest.dev'; 
+    config.baseUrl = 'https://serverest.dev';
   } else if (env == 'UAT') {
-    config.baseUrl = 'https://uat.serverest.dev';
+    config.baseUrl = 'https://serverest.dev';
   } else if (env == 'PROD') {
     config.baseUrl = 'https://serverest.dev';
   }
