@@ -14,6 +14,7 @@ Feature: API de Usuarios - ServeRest
     When method post
     Then status 201
     * print 'RESPONSE POST >>>>>>>>', response
+    * print 'RESPONSE POST >>>>>>>>', response
     And match response.message == 'Cadastro realizado com sucesso'
 
     * def userId = response._id
